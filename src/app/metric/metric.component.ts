@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-metric',
   templateUrl: './metric.component.html',
-  styleUrls: ['./metric.component.css']
+  styleUrls: ['./metric.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetricComponent implements OnInit {
 
