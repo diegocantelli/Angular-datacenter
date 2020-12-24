@@ -4,11 +4,13 @@
       <h1 class="navbar-brand mb-0">Overall Metrics</h1>
     </nav>
     <div class="row">
-      <app-metric class="col-sm-6" [used]="cpu.used" [available]="cpu.available" [title]="'CPU'"
-        [description]="'utilization of CPU cores'">
+      <app-metric class="col-sm-6" [used]="cpu.used" [available]="cpu.available">
+        <metric-title>CPU</metric-title>
+        <metric-description>utilization of CPU cores</metric-description>
       </app-metric>
-      <app-metric class="col-sm-6" [used]="mem.used" [available]="mem.available" [title]="'Memory'"
-        [description]="'utilization of memory in GB'">
+      <app-metric class="col-sm-6" [used]="mem.used" [available]="mem.available">
+        <metric-title>Memory</metric-title>
+        <metric-description>utilization of memory in GB</metric-description>
       </app-metric>
     </div>
   </div>
