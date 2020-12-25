@@ -1,5 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import {
+  Component, ViewChild, ComponentFactoryResolver, ComponentRef,
+  ViewContainerRef
+} from '@angular/core';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AlertComponent } from './alert/alert.component';
 
 @Component({
   selector: 'app-root',
@@ -7,12 +11,44 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  // viewchild permite que um componente seja acessado através do controller
-  //viewchild só permite selecionar os filhos diretos, nesse caso os filhos diretos de app.component.html
-  // enquanto que ao usar template variable permite apenas o acesso do componente através de uma chamada na view
+  alertRef: ComponentRef<AlertComponent>;
   @ViewChild(DashboardComponent) dashboard: DashboardComponent;
-  title = 'app';
 
+  // viewcontainerRef -> é uma referência para um elemento na aplicação
+  // que nos dá um ponto de referência onde pode ser renderizado o componente de alerta
+
+  // viewChild -> torna possível referenciar um elemento na controller
+  // como um tipo ViewContainerRef, dando acesso às apis necessárias
+  // para renderizar Componentes
+  @ViewChild('alertBox', { read: ViewContainerRef }) alertBox:
+    ViewContainerRef;
+
+  constructor(private ComponentFactoryResolver: ComponentFactoryResolver) { }
+
+  alert(date) {
+    if (!this.alertRef) {
+      //cria uma instância de Alert Componente
+      const alertComponent = this.ComponentFactoryResolver.
+        resolveComponentFactory(AlertComponent);
+
+      //this.alertBox -> mantém uma referência para onde o componente deverá ser renderizado
+      //this.alertRef -> mantém uma referência para o componente já criado dentro da HostView, no caso
+      //a referência da variável de template  
+      this.alertRef = this.alertBox.createComponent(alertComponent);
+    }
+    this.alertRef.instance.date = date;
+    //foi preciso chamar o changeDetector pois na linha acima a input property
+    //foi atualizada manualmente
+    this.alertRef.changeDetectorRef.detectChanges();
+    setTimeout(() => this.destroyAlert(), 5000);
+  }
+
+  destroyAlert() {
+    if (this.alertRef) {
+      this.alertRef.destroy();
+      delete this.alertRef;
+    }
+  }
   refresh() {
     this.dashboard.generateData();
   }

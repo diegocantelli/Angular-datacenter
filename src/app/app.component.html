@@ -1,2 +1,7 @@
 <app-navbar (onRefresh)="refresh()"></app-navbar>
-<app-dashboard></app-dashboard>
+
+<!-- alertbox -> variável de template utilizada para identificar onde
+o alerta será renderizado no template -->
+<ng-template #alertBox></ng-template>
+
+<app-dashboard (onRefresh)="alert($event)"></app-dashboard>
